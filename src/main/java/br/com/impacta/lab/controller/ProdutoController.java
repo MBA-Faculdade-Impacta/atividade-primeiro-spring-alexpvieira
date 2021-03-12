@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/produtos")
@@ -36,6 +37,19 @@ public class ProdutoController {
 	@GetMapping("")
 	public ResponseEntity<List<Produto>> consultarProdutos() {
 		return ResponseEntity.ok(bancoDeDados);
+	}
+
+  @GetMapping("/filtros")
+	public ResponseEntity<List<Produto>> buscarProdutos(@RequestParam("valor") double valor) {
+    List<Produto> novaLista = new ArrayList<>();
+    
+		for (int contador = 0; contador < bancoDeDados.size(); contador++) {
+			Produto produto = bancoDeDados.get(contador);
+			if (produto.getValor() == valor) {
+        novaLista.add(produto);
+			}
+		}
+    return ResponseEntity.ok(novaLista);
 	}
 	
 	@GetMapping("/{codigo}")
